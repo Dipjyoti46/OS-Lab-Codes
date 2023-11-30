@@ -1,0 +1,52 @@
+#include<stdio.h>
+struct sjf{
+	int pid,ser,wait,tatime;
+}p[20];
+
+struct sjf temp;
+
+int main(){
+	int i,j,n,avwait,avtat,twait=0,ttat=0;
+	
+	printf("Enter the number of process: ");
+	scanf("%d",&n);
+	
+	for(i=1;i<=n;i++){
+		printf("Enter the process id for process %d : ",i);
+		scanf("%d", &p[i].pid);
+		printf("Enter the process  %d service time : ",p[i].pid);
+		scanf("%d",&p[i].ser);
+	}
+	
+	for(i=1;i<=n;i++){
+		for(j=i+1;j<=n;j++){
+			if(p[j].ser<p[i].ser){
+				temp=p[i];
+				p[i]=p[j];
+				p[j]=temp;	
+			}
+		}
+	}
+	p[i].wait=0;
+	p[i].tatime=p[i].ser;
+	
+	for(i=2;i<=n;i++){
+		for(j=1;j<i;j++){
+			p[i].wait=p[j].wait+p[j].ser;
+		}
+			p[i].tatime=p[i].wait+p[i].ser;
+			twait=twait+p[i].wait;
+			ttat=ttat+p[i].tatime;
+		
+	}
+	printf("\npid\tser\twait\ttatime\n");
+	
+	for(i=1;i<=n;i++){
+		printf("\n%d\t%d\t%d\t%d\n",p[i].pid,p[i].ser,p[i].wait,p[i].tatime);
+	}
+	printf("Average waiting time : %d",twait/n);
+	printf("Average turnaruound time : %d",ttat/n);
+	
+	
+	
+}
